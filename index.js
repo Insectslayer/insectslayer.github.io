@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate the vertical center of the block relative to the document
         const blockRect = targetBlock.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const top = blockRect.top + scrollTop + (blockRect.height / 2) - (dot.offsetHeight / 2);
+        // const top = blockRect.top + scrollTop + (blockRect.height / 2) - (dot.offsetHeight / 2);
+        const top = blockRect.top + scrollTop + (dot.offsetHeight / 2);
         
         dot.style.top = `${top}px`;
     }

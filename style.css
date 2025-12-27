@@ -108,8 +108,8 @@ main {
 #jumping-dot {
     position: absolute;
     left: calc(50% - 440px); /* Position relative to main content width (800px/2 + padding) */
-    width: 12px;
-    height: 12px;
+    width: 36px;
+    height: 36px;
     background-color: var(--color-accent); /* Accent color */
     border-radius: 50%;
     transition: top 0.4s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth jump */
