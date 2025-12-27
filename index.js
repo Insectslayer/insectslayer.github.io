@@ -1,18 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
     const dot = document.getElementById('jumping-dot');
     const blocks = document.querySelectorAll('.block');
-    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+    const transitionStyle = getComputedStyle(dot).transition;
+    const headerHeight = parseInt(getComputedStyle(document.querySelector('header')).height, 0);
+
+    let activeBlock = null;
+    let isSticking = false;
 
     function moveDot(targetBlock) {
         if (!targetBlock) return;
-        
-        // Calculate the vertical center of the block relative to the document
-        const blockRect = targetBlock.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        // const top = blockRect.top + scrollTop + (blockRect.height / 2) - (dot.offsetHeight / 2);
-        const top = blockRect.top + scrollTop + (dot.offsetHeight / 2);
-        
-        dot.style.top = `${top}px`;
+        activeBlock = targetBlock;
+
+        updatePosition(true);
+    }
+
+    function updatePosition(isJump = false) {
+        if (!activeBlock) return;
+
+        const padding = 20; // Adjust as needed
+        const dotOffset = dot.offsetHeight / 2;
+
+        const blockRect = activeBlock.getBoundingClientRect();
+
+        // Natural position: Start of the block (relative to viewport)
+        const naturalTop = blockRect.top + dotOffset;
+
+        // Sticky limit: Header bottom + padding (relative to viewport)
+        const stickyLimit = headerHeight + padding;
+
+        if (isJump) {
+            dot.style.transition = transitionStyle;
+        }
+        else {
+            dot.style.transition = 'none';
+        }
+
+        if (naturalTop < stickyLimit) {
+            // Sticky Mode
+            dot.style.top = `${stickyLimit}px`;
+            isSticking = true;
+        } else {
+            // Natural Mode
+            isSticking = false;
+            dot.style.top = `${naturalTop}px`;
+        }
     }
 
     // Desktop: Hover interaction
@@ -32,14 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Check if the device is likely mobile (touch) or desktop (mouse)
-                // We prioritize hover on desktop, so we only auto-jump on scroll if it's a touch device
-                // or if we want to support keyboard navigation/scroll tracking.
-                // The prompt says: "In the mobile version, the dot will be at the block currently in view."
-                // This implies distinct behavior.
-                
+                const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
                 if (isTouchDevice) {
-                     moveDot(entry.target);
+                    moveDot(entry.target);
                 }
             }
         });
@@ -48,19 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
     blocks.forEach(block => {
         observer.observe(block);
     });
-    
-    // Initial position (first block)
+
+    // Scroll listener for sticky behavior
+    window.addEventListener('scroll', () => updatePosition(false));
+    window.addEventListener('resize', updatePosition);
+
+    // Initial position
     if (blocks.length > 0) {
-        // Small timeout to ensure layout is settled
         setTimeout(() => {
             moveDot(blocks[0]);
         }, 100);
     }
-    
-    // Handle window resize to update position if needed
-    window.addEventListener('resize', () => {
-        // Find the block that the dot is currently closest to? 
-        // Or just let the next interaction fix it.
-        // For now, we leave it as is.
-    });
 });

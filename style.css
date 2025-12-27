@@ -106,7 +106,7 @@ main {
 
 /* Jumping Dot */
 #jumping-dot {
-    position: absolute;
+    position: fixed;
     left: calc(50% - 440px); /* Position relative to main content width (800px/2 + padding) */
     width: 36px;
     height: 36px;
