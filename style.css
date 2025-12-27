@@ -1,0 +1,112 @@
+/* Reset & Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    padding-top: 60px; /* Space for fixed header */
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+
+header .logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+/* Main Layout */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+}
+
+/* Blocks */
+.block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.block h2 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.placeholder-image {
+    width: 100%;
+    height: 200px;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    color: #888;
+}
+
+/* Jumping Dot */
+#jumping-dot {
+    position: absolute;
+    left: calc(50% - 440px); /* Position relative to main content width (800px/2 + padding) */
+    width: 12px;
+    height: 12px;
+    background-color: #e74c3c; /* Accent color */
+    border-radius: 50%;
+    transition: top 0.4s cubic-bezier(0.22, 1, 0.36, 1); /* Smooth jump */
+    z-index: 999;
+    pointer-events: none;
+    top: -20px; /* Initial hidden state */
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    #jumping-dot {
+        left: 20px; /* Stick to left edge on smaller screens */
+    }
+    
+    main {
+        padding-left: 3rem; /* Make space for the dot */
+    }
+}
